@@ -1,23 +1,27 @@
 var express = require('express');
 var router = express.Router();
-
+var Spreadsheet = require('edit-google-spreadsheet');
 
 function getSH() {
-  new Promise( function( resolve, reject ) {
-    Spreadsheet.load({
+  return new Promise( function( resolve, reject ) {
+    var opts = {
       debug: true,
-      oauth2: require('./cred'),
-      spreadsheetName: 'Copy of Purple State Trips! (Responses)',
-      worksheetName: 'Sheet1',
-    }, function run(err, spreadsheet) {
-      reject(err);
+      oauth2: require('../auth'),
+      spreadsheetId: '1v9tTJk4JSHEGjH_LC2z5kZOfH6X4BjO2Ino1DJL1tX0',
+      worksheetName: 'Form Responses 1',
+    };
 
-      spreadsheet.receive({getValues:false},function(err, rows, info) {
-        reject(err);
-        console.log("Found rows:", rows);
-        console.log("With info:", info);
-        resolve( { rows, info } );
-      });
+    Spreadsheet.load(opts, function(err, spreadsheet) {
+      if( err ) {reject(err);}
+
+      try {
+        spreadsheet.receive({getValues:false},function(err, rows, info) {
+          if( err ) {reject(err);}
+          resolve( { rows, info } );
+        });
+      } catch(e) {
+        reject(e);
+      }
     });  
 
   });
@@ -30,7 +34,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/pix', function(req, res, next) {
   getSH().then( model => res.json(model),
-                err => res.json(err) );
+                err => res.json(err) ).catch(e => { console.log(e); res.json(err) });
 });
 
 module.exports = router;
