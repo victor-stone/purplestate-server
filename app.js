@@ -10,6 +10,8 @@ var users = require('./routes/users');
 
 var app = express();
 
+var api = require('instagram-node').instagram();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -32,6 +35,12 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+api.use({
+  client_id: process.env.INSTAGRAM_CLIENT_ID,
+  client_secret: process.env.INSTAGRAM_CLIENT_SECRET
+});
+ 
+var redirect_uri = 'http://yoursite.com/handleauth';
 // error handlers
 
 // development error handler

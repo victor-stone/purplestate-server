@@ -4,6 +4,8 @@ logs
 npm-debug.log*
 
 # Runtime data
+auth.js
+get_oauth2_permissions.js
 pids
 *.pid
 *.seed
