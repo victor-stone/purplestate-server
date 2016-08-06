@@ -7,7 +7,7 @@ function getSH() {
     var opts = {
       debug: true,
       oauth2: require('../auth'),
-      spreadsheetId: '1v9tTJk4JSHEGjH_LC2z5kZOfH6X4BjO2Ino1DJL1tX0',
+      spreadsheetId: require('../sheetId'),
       worksheetName: 'Form Responses 1',
     };
 
@@ -27,7 +27,6 @@ function getSH() {
   });
 }
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
