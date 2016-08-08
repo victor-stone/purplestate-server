@@ -39,7 +39,9 @@ router.get('/pix', function(req, res, next) {
 });
 
 router.get( '/regengroups', function(req,res) {
-  scrape();
+  scrape().then( () => res.json({ status: 'ok' }),
+                 err => res.json({ status: 'error', err }) );
+
 });
 
 module.exports = router;

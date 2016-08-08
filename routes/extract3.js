@@ -46,27 +46,26 @@ const stateColor = {
   'West Virginia': 'darkred'
 };
 
-console.log('getting data');
-
 const scrape =  () => {
-  let data = '';
-  let req = http.get ('http://movement2016.org', (res) => {
-    res.on ('data', (chunk) => { data += chunk; });
-    res.on ('end', () => { 
-      console.log( 'got end');
-      processPage (data); 
+  return new Promise( (resolve, reject) => {
+    let data = '';
+    let req = http.get ('http://movement2016.org', (res) => {
+      res.on ('data', (chunk) => { data += chunk; });
+      res.on ('end', () => { 
+        processPage (data); 
+        resolve(true);
+      });
     });
+    req.on ('error', (error) => {
+      console.log ('Fetch error', error);
+      reject(error);
+    });
+    req.end ();
   });
-  req.on ('error', (error) => {
-    console.log ('Fetch error', error);
-  });
-  req.end ();
 }
 
 function processPage (data) {
   mainPageParser (data, (groups) => {
-
-    console.log( 'in parser callback', groups );
 
     // convert HTML tags to characters (&amp. &nbsp.)
     for (let group of groups) {

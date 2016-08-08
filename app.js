@@ -9,7 +9,9 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 
 var scrape = require('./routes/extract3');
-scrape();
+scrape()
+  .then( () => console.log('scrape done'))
+  .catch( e => console.log('scrape failed **** '));
 
 
 var app = express();
