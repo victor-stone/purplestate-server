@@ -48,18 +48,20 @@ const stateColor = {
 
 console.log('getting data');
 
-let data = '';
-let req = http.get ('http://movement2016.org', (res) => {
-  res.on ('data', (chunk) => { data += chunk; });
-  res.on ('end', () => { 
-    console.log( 'got end');
-    processPage (data); 
+const scrape =  () => {
+  let data = '';
+  let req = http.get ('http://movement2016.org', (res) => {
+    res.on ('data', (chunk) => { data += chunk; });
+    res.on ('end', () => { 
+      console.log( 'got end');
+      processPage (data); 
+    });
   });
-});
-req.on ('error', (error) => {
-  console.log ('Fetch error', error);
-});
-req.end ();
+  req.on ('error', (error) => {
+    console.log ('Fetch error', error);
+  });
+  req.end ();
+}
 
 function processPage (data) {
   mainPageParser (data, (groups) => {
@@ -156,3 +158,5 @@ function fix (text) {
   result = result.replace (/&nbsp;/g,' ');
   return (result);
 }
+
+module.exports = scrape;

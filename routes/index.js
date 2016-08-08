@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
+var express     = require('express');
 var Spreadsheet = require('edit-google-spreadsheet');
+var scrape      = require('./extract3');
 
+var router = express.Router();
 
 function getSH() {
   return new Promise( function( resolve, reject ) {
@@ -37,5 +38,8 @@ router.get('/pix', function(req, res, next) {
                 err => res.json(err) ).catch(e => { console.log(e); res.json(err) });
 });
 
+router.get( '/regengroups', function(req,res) {
+  scrape();
+});
 
 module.exports = router;
