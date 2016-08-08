@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Spreadsheet = require('edit-google-spreadsheet');
 
+
 function getSH() {
   return new Promise( function( resolve, reject ) {
     var opts = {
@@ -35,5 +36,6 @@ router.get('/pix', function(req, res, next) {
   getSH().then( model => res.json(model),
                 err => res.json(err) ).catch(e => { console.log(e); res.json(err) });
 });
+
 
 module.exports = router;

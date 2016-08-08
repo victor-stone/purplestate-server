@@ -4,4 +4,5 @@ npm-debug.log*
 auth.js
 get_oauth2_permissions.js
 sheetId.js
+public/data/*
 node_modules
